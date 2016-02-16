@@ -1,16 +1,17 @@
 package codecool.logger;
 
 public class ChainPatternDemo {
-
-    public static void main(String[] args) {
-        AbstractLogger consolLogger = new ConsolLogger(AbstractLogger.INFO);
+    public static AbstractLogger getLoggerChain() {
+        AbstractLogger consoleLogger = new ConsolLogger(AbstractLogger.INFO);
         AbstractLogger errorLogger = new ErrorLogger(AbstractLogger.INFO);
         AbstractLogger fileLogger = new FileLogger(AbstractLogger.DEBUG);
-        consolLogger.setNextLogger(fileLogger);
+        consoleLogger.setNextLogger(fileLogger);
         fileLogger.setNextLogger(errorLogger);
+        return consoleLogger; }
 
-        consolLogger.logMessage(AbstractLogger.INFO, "This is info.");
-        consolLogger.logMessage(AbstractLogger.DEBUG, "This is debug info.");
-        consolLogger.logMessage(AbstractLogger.ERROR, "Caffee ran out.");
-    }
+    public static void main(String[] args) {
+        AbstractLogger loggerChain = getLoggerChain();
+        loggerChain.logMessage(AbstractLogger.INFO, "This is info.");
+        loggerChain.logMessage(AbstractLogger.DEBUG, "This is debug info.");
+        loggerChain.logMessage(AbstractLogger.ERROR, "Caffee ran out."); }
 }
